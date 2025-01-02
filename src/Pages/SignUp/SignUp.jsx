@@ -2,11 +2,13 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
   const { createUser ,updateUserProfile} = useContext(AuthContext);
+  const navigate=useNavigate()
+  const location=useLocation();
   const {
     register,
     handleSubmit,
@@ -21,6 +23,7 @@ const SignUp = () => {
      updateUserProfile(data.name,data.photoURL)
      .then(()=>{
         Swal.fire('User Profile Updated')
+        navigate('/',{state:{from:location}})
         reset();
      })
      .catch(err=>{
