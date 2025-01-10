@@ -10,6 +10,13 @@ import Secret from "../Pages/Shared/Secret/Secret";
 import DashBoard from "../Layout/DashBoard";
 import Cart from "../Pages/Dashboard/Cart";
 import Error from "../Pages/Error/Error";
+import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
+import AddItems from "../Pages/Dashboard/AddItems/AddItems";
+import AdminRoute from "./AdminRoute";
+import ManageItems from "../Pages/Dashboard/ManageItems/ManageItems";
+import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
+import Payment from "../Pages/Dashboard/Payment/Payment";
+import PaymentHistory from "../Pages/Dashboard/Payment/PaymentHistory";
 
 const router = createBrowserRouter([
   {
@@ -29,36 +36,81 @@ const router = createBrowserRouter([
         element: <Order />,
       },
       {
-        path:'/login',
-        element:<Login/>
+        path: "/login",
+        element: <Login />,
       },
       {
-        path:'/signUp',
-        element:<SignUp/>
-      },{
-        path:'/secret',
-        element:<PrivateRoutes><Secret/></PrivateRoutes>
-      }
-    ],
-  }
-  ,
-
-  {
-    path:'dashboard',
-    element:<DashBoard/>,
-    children:[
+        path: "/signUp",
+        element: <SignUp />,
+      },
       {
-        path:'cart',
-        element:<Cart/>
-      }
-    ]
+        path: "/secret",
+        element: (
+          <PrivateRoutes>
+            <Secret />
+          </PrivateRoutes>
+        ),
+      },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoutes>
+        <DashBoard />
+      </PrivateRoutes>
+    ),
+    children: [
+      {
+        path: "cart",
+        element: <Cart />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
+        path: "paymentHistory",
+        element: <PaymentHistory />,
+      },
+      // Admin routes
+      {
+        path: "addItems",
+        element: (
+          <AdminRoute>
+            <AddItems />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manageItems",
+        element: (
+          <AdminRoute>
+            <ManageItems />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "AllUsers",
+        element: <AllUsers />,
+      },
+      {
+        path: "updateItem/:id",
+        element: (
+          <AdminRoute>
+            <UpdateItem />
+          </AdminRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/menu/${params.id}`),
+      },
+    ],
   },
 
   {
-path:'*',
-element:<Error/>
-  }
- 
+    path: "*",
+    element: <Error />,
+  },
 ]);
 
 export default router;

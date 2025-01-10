@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const SignUp = () => {
   const { createUser ,updateUserProfile} = useContext(AuthContext);
+  const axiosPublic =useAxiosPublic();
   const navigate=useNavigate()
   const location=useLocation();
   const {
@@ -22,6 +24,20 @@ const SignUp = () => {
       console.log(loggedUser);
      updateUserProfile(data.name,data.photoURL)
      .then(()=>{
+      const userInfo={
+        name:data.name,
+        email:data.email,
+        photo:data.photoURL
+      }
+      // create user entry in database
+      axiosPublic.post('/users',userInfo)
+      .then(res=>{
+        if(res.data.insertedId){
+          Swal.fire('User Profile Updated')
+          navigate('/',{state:{from:location}})
+          reset();
+        }
+      })
         Swal.fire('User Profile Updated')
         navigate('/',{state:{from:location}})
         reset();

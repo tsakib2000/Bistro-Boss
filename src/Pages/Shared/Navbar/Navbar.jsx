@@ -28,7 +28,7 @@ const Navbar = () => {
         <Link to="/secret">Secret</Link>
       </li>
       <li>
-        <Link to='/dashboard/cart'>
+        <Link to='/dashboard'>
           <button className="btn">
            <FaShoppingCart />
             <div className="badge badge-secondary">+{cart.length}</div>
@@ -80,7 +80,9 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{navOPtions}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+     {
+      user && <img className="h-11" referrerPolicy="no-referrer" src={user?.photoURL} alt="" />
+     }
       </div>
     </div>
   );
